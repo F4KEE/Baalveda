@@ -1,0 +1,27 @@
+{
+  "name": "grace-clinic-backend",
+  "version": "1.0.0",
+  "description": "Grace Clinic - Premium Healthcare Appointment Booking System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "clinic",
+    "healthcare",
+    "appointment",
+    "booking"
+  ],
+  "author": "Grace Clinic",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "mysql2": "^3.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
