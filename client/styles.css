@@ -237,7 +237,7 @@ section {
 .hero {
     max-width: 1180px;
     margin: 0 auto;
-    padding: 5.5rem 22px 4.5rem;
+    padding: 2rem 22px 2rem;
     display: grid;
     grid-template-columns: 1.02fr 0.98fr;
     gap: 2rem;
