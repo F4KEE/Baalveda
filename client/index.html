@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baalveda- Healthcare</title>
-    <link rel="icon" type="image/png" href="../src/tabicon.png" class="tabicon">
+    <title>Home | Baalveda Healthcare</title>
+    <link rel="icon" type="image/png" href="../src/tabicon.png">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="container">   <!-- ADD THIS BACK -->
-            
+        <div class="container">
+            <button class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
             <div class="logo">
                 <a href="index.html">
                     <img src="../src/title.png" alt="Baalveda Logo">
                 </a>
             </div>
-    
-            <ul class="nav-links">
+
+            <ul class="nav-links" id="primary-navigation">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="appointments.html" class="cta-link">Book Appointment</a></li>
             </ul>
-    
         </div>
     </nav>
 

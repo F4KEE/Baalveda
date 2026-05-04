@@ -3,19 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Grace Clinic</title>
+    <title>Contact Us | Baalveda Healthcare</title>
+    <link rel="icon" type="image/png" href="../src/tabicon.png">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <div class="logo">Grace Clinic</div>
-            <ul class="nav-links">
+            <button class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="logo">
+                <a href="index.html">
+                    <img src="../src/title.png" alt="Baalveda Logo">
+                </a>
+            </div>
+
+            <ul class="nav-links" id="primary-navigation">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="services.html">Services</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
                 <li><a href="appointments.html" class="cta-link">Book Appointment</a></li>
             </ul>
         </div>
@@ -25,7 +38,7 @@
     <section class="page-header">
         <div class="container">
             <h1>Contact Us</h1>
-            <p>Get in touch with Grace Clinic</p>
+            <p>Get in touch with Baalveda</p>
         </div>
     </section>
 
@@ -45,7 +58,7 @@
 
                     <div class="contact-item-detail">
                         <h4>📍 Address</h4>
-                        <p>Grace Clinic<br>123 Medical Park<br>City Center<br>Postal Code: 400001</p>
+                        <p>Baalveda Clinic<br>123 Medical Park<br>City Center<br>Postal Code: 400001</p>
                     </div>
 
                     <div class="contact-item-detail">
@@ -90,7 +103,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Grace Clinic. All rights reserved. | Premium Healthcare Services</p>
+            <p>&copy; 2026 Baalveda Clinic. All rights reserved. | Premium Healthcare Services</p>
         </div>
     </footer>
 

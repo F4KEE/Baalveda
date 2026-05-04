@@ -15,6 +15,7 @@ function setMinDate() {
 document.addEventListener('DOMContentLoaded', function() {
     setMinDate();
     setupFormSubmission();
+    setupMobileNav();
 });
 
 // Setup form submission
@@ -26,6 +27,35 @@ function setupFormSubmission() {
             await submitBooking();
         });
     }
+}
+
+// Setup mobile navigation
+function setupMobileNav() {
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.getElementById('primary-navigation');
+
+    if (!navToggle || !navLinks) {
+        return;
+    }
+
+    navToggle.addEventListener('click', function() {
+        const isOpen = navLinks.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function() {
+            navLinks.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 700) {
+            navLinks.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
 }
 
 // Submit appointment booking

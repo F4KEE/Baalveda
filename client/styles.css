@@ -168,15 +168,22 @@ ul {
 }
 
 .cta-link {
+    display: inline-block;
     background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
     color: #fff !important;
     border-radius: 999px;
     padding: 0.6rem 1.05rem !important;
     box-shadow: var(--shadow-sm);
+    transform-origin: center;
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .cta-link::after {
     display: none;
+}
+
+.cta-link:hover {
+    transform: translateY(-1px) scale(1.04);
 }
 
 /* hero section small buttons */
@@ -411,7 +418,6 @@ section {
 
 .service-card:hover,
 .service-full-card:hover,
-.testimonial-card:hover,
 .mission-item:hover,
 .info-card:hover,
 .doctor-card:hover {
@@ -421,7 +427,6 @@ section {
 }
 
 .service-card:hover::before,
-.testimonial-card:hover::before,
 .mission-item:hover::before,
 .service-full-card:hover::before,
 .info-card:hover::before,
@@ -430,6 +435,15 @@ section {
 .contact-info-box:hover::before,
 .contact-map-box:hover::before {
     opacity: 1;
+}
+
+.testimonial-card:hover {
+    border-color: transparent;
+}
+
+.testimonial-card:hover::before {
+    opacity: 1;
+    transition: none;
 }
 
 .service-card-img,
@@ -461,6 +475,12 @@ section {
     max-width: 70ch;
     margin: 0 auto 1.7rem;
     text-align: center;
+}
+
+.about-intro .btn {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .testimonial-card p {

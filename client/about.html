@@ -3,15 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Grace Clinic</title>
+    <title>About Us | Baalveda Healthcare</title>
+    <link rel="icon" type="image/png" href="../src/tabicon.png">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <div class="logo">Grace Clinic</div>
-            <ul class="nav-links">
+            <button class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="logo">
+                <a href="index.html">
+                    <img src="../src/title.png" alt="Baalveda Logo">
+                </a>
+            </div>
+
+            <ul class="nav-links" id="primary-navigation">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html" class="active">About</a></li>
                 <li><a href="services.html">Services</a></li>
@@ -25,7 +38,7 @@
     <section class="page-header">
         <div class="container">
             <h1>About Our Doctors</h1>
-            <p>Meet the healthcare professionals behind Grace Clinic</p>
+            <p>Meet the healthcare professionals behind Baalveda</p>
         </div>
     </section>
 
@@ -124,7 +137,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Grace Clinic. All rights reserved. | Premium Healthcare Services</p>
+            <p>&copy; 2026 Baalveda Clinic. All rights reserved. | Premium Healthcare Services</p>
         </div>
     </footer>
 
