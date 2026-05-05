@@ -1,4 +1,4 @@
-# 🏥 Grace Clinic - Premium Healthcare Website
+# 🏥 Baalveda - Premium Healthcare Website
 
 A production-quality clinic website with integrated appointment booking system, built with Node.js, Express, MySQL, and modern HTML/CSS/JavaScript.
 
