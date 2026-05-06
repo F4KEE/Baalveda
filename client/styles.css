@@ -33,12 +33,61 @@ html {
 body {
     font-family: "Manrope", "Segoe UI", sans-serif;
     color: var(--text);
-    background:
-        radial-gradient(900px 500px at 90% -10%, rgba(239, 74, 100, 0.12), transparent 70%),
-        radial-gradient(600px 400px at -5% 25%, rgba(26, 47, 127, 0.1), transparent 70%),
-        var(--bg);
+
+    background-color: #faf7f8;
+
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(239, 74, 100, 0.22) 0%, transparent 32%),
+
+        radial-gradient(circle at 90% 10%, rgba(26, 47, 127, 0.20) 0%, transparent 34%),
+
+        radial-gradient(circle at 80% 80%, rgba(239, 74, 100, 0.14) 0%, transparent 30%),
+
+        radial-gradient(circle at 20% 90%, rgba(26, 47, 127, 0.14) 0%, transparent 30%);
+
+    background-attachment: fixed;
+
     line-height: 1.6;
 }
+
+body::before {
+    content: "";
+    position: fixed;
+
+    width: 500px;
+    height: 500px;
+
+    background: rgba(239, 74, 100, 0.18);
+
+    border-radius: 50%;
+
+    top: -120px;
+    left: -120px;
+
+    filter: blur(120px);
+
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+
+    width: 500px;
+    height: 500px;
+
+    background: rgba(26, 47, 127, 0.16);
+
+    border-radius: 50%;
+
+    bottom: -150px;
+    right: -100px;
+
+    filter: blur(120px);
+
+    z-index: -1;
+}
+
 
 .logo img {
     height: 80px;
@@ -103,11 +152,52 @@ ul {
 /* Navigation */
 .navbar {
     position: sticky;
-    top: 0;
-    z-index: 20;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-    backdrop-filter: blur(12px);
-    background: rgba(250, 247, 248, 0.88);
+    top: 14px;
+
+    z-index: 1000;
+
+    width: calc(100% - 40px);
+    max-width: 1180px;
+
+    margin: 0 auto;
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(255,255,255,0.18);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.30),
+            rgba(255,255,255,0.08)
+        );
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    box-shadow:
+        0 8px 32px rgba(26, 47, 127, 0.12),
+        0 4px 18px rgba(239, 74, 100, 0.08);
+
+    overflow: hidden;
+}
+
+.navbar::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(239, 74, 100, 0.08),
+            transparent,
+            rgba(26, 47, 127, 0.08)
+        );
+
+    pointer-events: none;
 }
 
 .navbar .container {
@@ -169,13 +259,29 @@ ul {
 
 .cta-link {
     display: inline-block;
-    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef4a64 0%,
+            #1a2f7f 100%
+        );
+
     color: #fff !important;
+
     border-radius: 999px;
-    padding: 0.6rem 1.05rem !important;
-    box-shadow: var(--shadow-sm);
+
+    padding: 0.72rem 1.2rem !important;
+
+    box-shadow:
+        0 10px 22px rgba(239, 74, 100, 0.22),
+        0 8px 18px rgba(26, 47, 127, 0.18);
+
     transform-origin: center;
-    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
 }
 
 .cta-link::after {
@@ -183,7 +289,11 @@ ul {
 }
 
 .cta-link:hover {
-    transform: translateY(-1px) scale(1.04);
+    transform: translateY(-2px) scale(1.05);
+
+    box-shadow:
+        0 16px 32px rgba(239, 74, 100, 0.28),
+        0 10px 24px rgba(26, 47, 127, 0.22);
 }
 
 /* hero section small buttons */
@@ -377,6 +487,10 @@ section {
     position: relative;
     isolation: isolate;
     overflow: hidden;
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
 }
 
 .service-card::before,
@@ -421,7 +535,7 @@ section {
 .mission-item:hover,
 .info-card:hover,
 .doctor-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
     box-shadow: var(--shadow-md);
     border-color: transparent;
 }
@@ -692,7 +806,7 @@ section {
     }
 
     .hero-image {
-        order: -1;
+        order: -1;   
     }
 
     .hero-img {
