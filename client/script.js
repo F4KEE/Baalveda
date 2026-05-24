@@ -3,6 +3,13 @@
 // ============================================
 
 // Set minimum date to today
+const supabaseUrl = 'https://yafszzizbuojzdtvoprh.supabase.co';
+const supabaseKey = 'sb_publishable_wglkUNoLTpgy23m9KcWTUg_PALnTLde';
+
+const supabaseClient = window.supabase.createClient(
+  supabaseUrl,
+  supabaseKey
+);
 function setMinDate() {
     const dateInput = document.getElementById('appointmentDate');
     if (dateInput) {
@@ -113,23 +120,19 @@ async function submitBooking() {
     loadingSpinner.style.display = 'inline';
 
     try {
-        const response = await fetch('http://localhost:3001/api/book', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                patientName,
-                phone,
-                doctor,
-                appointmentDate,
-                appointmentTime
-            })
-        });
+        const { data, error } = await supabaseClient
+    .from('appointments')
+    .insert([
+        {
+            patient_name: patientName,
+            phone: phone,
+            doctor: doctor,
+            appointment_date: appointmentDate,
+            appointment_time: appointmentTime
+        }
+    ]);
 
-        const data = await response.json();
-
-        if (response.ok) {
+if (!error) {
             // Hide form and show success message
             form.style.display = 'none';
             const successMessage = document.getElementById('successMessage');
@@ -147,7 +150,7 @@ async function submitBooking() {
             // Reset form
             form.reset();
         } else {
-            showError(data.message || 'Failed to book appointment. Please try again.');
+            showError(error.message || 'Failed to book appointment. Please try again.');
         }
     } catch (error) {
         console.error('Error:', error);
