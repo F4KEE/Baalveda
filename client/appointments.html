@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | Baalveda Healthcare</title>
+    <link rel="icon" type="image/png" href="../src/tabicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <button class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="logo">
+                <a href="index.html">
+                    <img src="../src/title.png" alt="Baalveda Logo">
+                </a>
+            </div>
+
+            <ul class="nav-links" id="primary-navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="how_we_work.html">How We Work</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="appointments.html" class="cta-link active">Book Appointment</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Book Your Appointment</h1>
+            <p>Schedule a consultation with our expert doctors</p>
+        </div>
+    </section>
+
+    <!-- Booking Form -->
+    <section class="booking-section">
+        <div class="container">
+            <div class="booking-container">
+                <form id="appointmentForm" class="appointment-form">
+                    <h2>Appointment Booking Form</h2>
+
+                    <!-- Patient Name -->
+                    <div class="form-group">
+                        <label for="patientName">Full Name *</label>
+                        <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" pattern="[0-9\-\+\s\(\)]{7,}" required>
+                    </div>
+
+                    <!-- Doctor Selection -->
+                    <div class="form-group">
+                        <label for="doctor">Select Doctor *</label>
+                        <select id="doctor" name="doctor" required>
+                            <option value="">-- Choose a Doctor --</option>
+                            <option value="Dr. Rajesh Kumar">Dr. Rajesh Kumar (MD, General Medicine)</option>
+                            <option value="Dr. Priya Kumar">Dr. Priya Kumar (MD, Pediatrics & Family Medicine)</option>
+                        </select>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label for="appointmentDate">Appointment Date *</label>
+                        <input type="date" id="appointmentDate" name="appointmentDate" required>
+                    </div>
+
+                    <!-- Time Slot -->
+                    <div class="form-group">
+                        <label for="appointmentTime">Preferred Time *</label>
+                        <select id="appointmentTime" name="appointmentTime" required>
+                            <option value="">-- Choose a Time Slot --</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="10:30 AM">10:30 AM</option>
+                            <option value="11:00 AM">11:00 AM</option>
+                            <option value="11:30 AM">11:30 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="2:00 PM">2:00 PM</option>
+                            <option value="2:30 PM">2:30 PM</option>
+                            <option value="3:00 PM">3:00 PM</option>
+                            <option value="3:30 PM">3:30 PM</option>
+                            <option value="4:00 PM">4:00 PM</option>
+                            <option value="4:30 PM">4:30 PM</option>
+                            <option value="5:00 PM">5:00 PM</option>
+                            <option value="5:30 PM">5:30 PM</option>
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span id="submitText">Book Appointment</span>
+                        <span id="loadingSpinner" style="display:none;">Booking...</span>
+                    </button>
+                </form>
+
+                <!-- Success Message -->
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <div class="success-icon">✓</div>
+                    <h3>Appointment Confirmed!</h3>
+                    <p id="confirmationText"></p>
+                    <p class="small-text">We have received your booking request. Our clinic will contact you shortly to confirm your appointment.</p>
+                    <a href="index.html" class="btn btn-secondary">Back to Home</a>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="error-message" style="display: none;">
+                    <h3>Booking Failed</h3>
+                    <p id="errorText"></p>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Try Again</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="booking-info">
+        <div class="container">
+            <h2>Booking Information</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>📋 Before Your Visit</h4>
+                    <ul>
+                        <li>Bring valid ID and insurance card</li>
+                        <li>Arrive 10 minutes early</li>
+                        <li>List current medications</li>
+                        <li>Prepare medical history</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h4>💬 Cancellation Policy</h4>
+                    <ul>
+                        <li>Cancel 24 hours in advance</li>
+                        <li>Call us to reschedule</li>
+                        <li>No charges for cancellations</li>
+                        <li>Emergency appointments available</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h4>☎️ Contact Us</h4>
+                    <ul>
+                        <li>Phone: +91 98765 43210</li>
+                        <li>Hours: Mon-Sat, 10 AM - 6 PM</li>
+                        <li>Emergency: +91 98765 43211</li>
+                        <li>Email: info@graceclinic.com</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Baalveda Clinic. All rights reserved. | Premium Healthcare Services</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

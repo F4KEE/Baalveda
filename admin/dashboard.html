@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Baalveda Healthcare</title>
+    <link rel="icon" type="image/png" href="../src/tabicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            padding: 0.7rem 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            min-width: 200px;
+        }
+
+        .appointments-table {
+            width: 100%;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+        }
+
+        th {
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(26, 188, 156, 0.05);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-cancel {
+            background-color: var(--error-color);
+            color: var(--white);
+        }
+
+        .btn-cancel:hover {
+            background-color: #c0392b;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .appointments-table {
+                overflow-x: auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.8rem;
+            }
+
+            .action-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="../client/index.html">
+                    <img src="../src/title.png" alt="Baalveda Logo">
+                </a>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="../client/index.html">Home</a></li>
+                <li><a href="../client/about.html">About</a></li>
+                <li><a href="../client/services.html">Services</a></li>
+                <li><a href="../client/contact.html">Contact</a></li>
+                <li><a href="../client/appointments.html" class="cta-link">Book Appointment</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>📊 Appointment Dashboard</h1>
+            <button class="btn btn-primary" onclick="location.reload()">🔄 Refresh</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalAppointments">0</div>
+                <div class="stat-label">Total Appointments</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="upcomingAppointments">0</div>
+                <div class="stat-label">Upcoming</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="todayAppointments">0</div>
+                <div class="stat-label">Today</div>
+            </div>
+        </div>
+
+        <!-- Search/Filter -->
+        <div class="admin-controls" style="margin-bottom: 2rem;">
+            <input type="text" class="search-box" id="searchInput" placeholder="Search by name or phone...">
+            <select class="search-box" id="filterDoctor">
+                <option value="">All Doctors</option>
+                <option value="Dr. Rajesh Kumar">Dr. Rajesh Kumar</option>
+                <option value="Dr. Priya Kumar">Dr. Priya Kumar</option>
+            </select>
+        </div>
+
+        <!-- Appointments Table -->
+        <div class="appointments-table">
+            <div id="loading" class="loading" style="display: none;">
+                ⏳ Loading appointments...
+            </div>
+            <div id="noData" class="no-data" style="display: none;">
+                No appointments found
+            </div>
+            <table id="appointmentsTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Patient Name</th>
+                        <th>Phone</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Booked At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let allAppointments = [];
+
+        // Load appointments on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAppointments();
+            setupSearch();
+        });
+
+        // Load appointments from API
+        async function loadAppointments() {
+            const loading = document.getElementById('loading');
+            const noData = document.getElementById('noData');
+            const table = document.getElementById('appointmentsTable');
+
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('http://localhost:3001/api/admin/appointments');
+                const data = await response.json();
+
+                loading.style.display = 'none';
+
+                if (data.success && data.data.length > 0) {
+                    allAppointments = data.data;
+                    renderAppointments(allAppointments);
+                    updateStats();
+                    table.style.display = 'table';
+                    noData.style.display = 'none';
+                } else {
+                    table.style.display = 'none';
+                    noData.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                loading.innerHTML = '❌ Error loading appointments. Make sure backend server is running.';
+                loading.style.display = 'block';
+            }
+        }
+
+        // Render appointments in table
+        function renderAppointments(appointments) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            appointments.forEach((apt, index) => {
+                const row = document.createElement('tr');
+                const date = new Date(apt.appointment_date + 'T00:00:00');
+                const formattedDate = date.toLocaleDateString('en-IN', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                const createdDate = new Date(apt.created_at);
+                const formattedCreated = createdDate.toLocaleString('en-IN');
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong>${apt.patient_name}</strong></td>
+                    <td><a href="tel:${apt.phone}">${apt.phone}</a></td>
+                    <td>${apt.doctor}</td>
+                    <td>${formattedDate}</td>
+                    <td>${apt.appointment_time}</td>
+                    <td><small>${formattedCreated}</small></td>
+                    <td>
+                        <button class="action-btn btn-cancel" onclick="cancelAppointment(${apt.id})">
+                            Cancel
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Cancel appointment
+        async function cancelAppointment(id) {
+            if (!confirm('Are you sure you want to cancel this appointment?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3001/api/appointments/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✓ Appointment cancelled successfully');
+                    loadAppointments();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error cancelling appointment');
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const upcoming = allAppointments.filter(a => a.appointment_date >= today).length;
+            const todayCount = allAppointments.filter(a => a.appointment_date === today).length;
+
+            document.getElementById('totalAppointments').textContent = allAppointments.length;
+            document.getElementById('upcomingAppointments').textContent = upcoming;
+            document.getElementById('todayAppointments').textContent = todayCount;
+        }
+
+        // Setup search and filter
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const filterDoctor = document.getElementById('filterDoctor');
+
+            searchInput.addEventListener('input', filterAppointments);
+            filterDoctor.addEventListener('change', filterAppointments);
+        }
+
+        // Filter appointments
+        function filterAppointments() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const doctorFilter = document.getElementById('filterDoctor').value;
+
+            let filtered = allAppointments.filter(apt => {
+                const matchesSearch = apt.patient_name.toLowerCase().includes(searchTerm) ||
+                                    apt.phone.includes(searchTerm);
+                const matchesDoctor = !doctorFilter || apt.doctor === doctorFilter;
+
+                return matchesSearch && matchesDoctor;
+            });
+
+            renderAppointments(filtered);
+        }
+    </script>
+</body>
+</html>

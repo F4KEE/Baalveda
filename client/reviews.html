@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews | Baalveda Healthcare</title>
+    <link rel="icon" type="image/png" href="../src/tabicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        /* Platform Cards */
+        .reviews-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .review-platform {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-platform::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B35, #FF8C42);
+        }
+
+        .review-platform:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+        }
+
+        .platform-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .platform-logo img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .review-platform h3 {
+            font-size: 1.6rem;
+            color: #1a1a1a;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+        }
+
+        .review-platform p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .review-stats {
+            background: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            margin: 0.4rem 0;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 0.95rem;
+        }
+
+        .star {
+            color: #FFD700;
+            font-size: 1.1rem;
+            margin-right: 0.3rem;
+        }
+
+        .review-platform .btn {
+            display: inline-block;
+            width: 100%;
+            text-decoration: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-justdial {
+            background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
+            color: #333;
+        }
+
+        .btn-justdial:hover {
+            background: linear-gradient(135deg, #FFC700 0%, #FFB700 100%);
+            transform: scale(1.02);
+        }
+
+        .btn-google {
+            background: linear-gradient(135deg, #4285F4 0%, #1F2937 100%);
+            color: white;
+        }
+
+        .btn-google:hover {
+            background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+            transform: scale(1.02);
+        }
+
+        /* Testimonials Section */
+        .testimonials-full {
+            margin-top: 4rem;
+            background: linear-gradient(180deg, #f8f9fa 0%, white 100%);
+            padding: 3rem 0;
+            border-radius: 16px;
+        }
+
+        .testimonial-card-large {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #FF6B35;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card-large:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transform: translateX(4px);
+        }
+
+        .testimonial-card-large .stars {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-card-large p {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-card-large h4 {
+            color: #FF6B35;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* Review Form Section */
+        .review-form-section {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-radius: 16px;
+        }
+
+        .review-form-section h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .review-form-section > .container > p {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .review-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #FF6B35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            transform: scale(1.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .reviews-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .review-form {
+                padding: 1.5rem;
+            }
+
+            .review-form-section {
+                padding: 2rem 0;
+                margin-top: 2rem;
+            }
+
+            .review-form-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <button class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="logo">
+                <a href="index.html">
+                    <img src="../src/title.png" alt="Baalveda Logo">
+                </a>
+            </div>
+
+            <ul class="nav-links" id="primary-navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="how_we_work.html">How We Work</a></li>
+                <li><a href="reviews.html" class="active">Reviews</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="appointments.html" class="cta-link">Book Appointment</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Title Section -->
+    <section class="page-header" style="background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%); color: white; padding: 3rem 0; text-align: center;">
+        <div class="container">
+            <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Patient Reviews</h1>
+            <p style="font-size: 1.1rem; opacity: 0.95;">Trusted by thousands of families across the region</p>
+        </div>
+    </section>
+
+    <!-- Review Platforms Section -->
+    <section class="review-platforms" style="padding: 3rem 0;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #333;">Rate Us On</h2>
+            
+            <div class="reviews-container">
+                <!-- JustDial Card -->
+                <div class="review-platform">
+                    <div class="platform-logo">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Justdial_Logo.svg/960px-Justdial_Logo.svg.png?_=20240421103151" alt="JustDial Logo">
+                    </div>
+                    <h3>JustDial</h3>
+                    <p>Share your experience on JustDial</p>
+                    <div class="review-stats">
+                        <div class="stat"><span class="star">⭐⭐⭐⭐⭐</span></div>
+                        <div class="stat">4.8/5 Rating</div>
+                        <div class="stat">500+ Reviews</div>
+                    </div>
+                    <a href="https://jsdl.in/DT-49SDBLBNIIP" target="_blank" class="btn btn-primary btn-justdial">Review on JustDial</a>
+                </div>
+
+                <!-- Google Reviews Card -->
+                <div class="review-platform">
+                    <div class="platform-logo">
+                        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google Logo">
+                    </div>
+                    <h3>Google Reviews</h3>
+                    <p>Share your feedback on Google</p>
+                    <div class="review-stats">
+                        <div class="stat"><span class="star">⭐⭐⭐⭐⭐</span></div>
+                        <div class="stat">4.9/5 Rating</div>
+                        <div class="stat">700+ Reviews</div>
+                    </div>
+                    <a href="https://www.google.com/maps/place/Balveda+%26+Ayur+Skin+Care+Clinic/@18.6029041,73.7965336,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc2b9f56549855d:0x5747529a7402781c!8m2!3d18.6029041!4d73.7965336!16s%2Fg%2F11y3d_vndc?entry=tts&g_ep=EgoyMDI1MDIxOS4xIPu8ASoASAFQAw%3D%3D" target="_blank" class="btn btn-primary btn-google">Review on Google</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Patient Testimonials Section -->
+    <section class="testimonials-full">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #333;">Patient Success Stories</h2>
+            
+            <div class="testimonials-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div class="testimonial-card-large">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"My son had recurrent infections, but after treatment at Baalveda without antibiotics, his immunity has improved significantly. Highly recommended!"</p>
+                    <h4>Rajesh Kumar</h4>
+                </div>
+
+                <div class="testimonial-card-large">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Dr. Tanmay is amazing! He took time to understand our concerns and provided holistic solutions. Our daughter is much healthier now."</p>
+                    <h4>Neha Sharma</h4>
+                </div>
+
+                <div class="testimonial-card-large">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Baalveda's Suvarn Prashan therapy has been wonderful for my child's development. The natural approach really works!"</p>
+                    <h4>Priya Desai</h4>
+                </div>
+
+                <div class="testimonial-card-large">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Very caring staff and doctors. They made us feel comfortable throughout the treatment. Best pediatric clinic in the city!"</p>
+                    <h4>Vikram Patel</h4>
+                </div>
+
+                <div class="testimonial-card-large">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"I appreciate the antibiotic-free policy. It's refreshing to find doctors who focus on natural healing and child wellness."</p>
+                    <h4>Anjali Singh</h4>
+                </div>
+
+                <div class="testimonial-card-large">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"The combination of modern medicine and Ayurvedic therapies is unique. Definitely the best choice for our family's healthcare!"</p>
+                    <h4>Arjun Nair</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Submit Your Review Section -->
+    <section class="review-form-section">
+        <div class="container">
+            <h2>Share Your Experience</h2>
+            <p>Help other families by sharing your feedback about Baalveda Healthcare</p>
+            
+            <form class="review-form" id="reviewForm">
+                <div class="form-group">
+                    <label for="name">Your Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                </div>
+
+                <div class="form-group">
+                    <label>Your Rating *</label>
+                    <div class="star-rating" id="starRating">
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5">⭐</label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4">⭐</label>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3">⭐</label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2">⭐</label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1">⭐</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="service">Service Availed</label>
+                    <select id="service" name="service">
+                        <option value="">Select a service</option>
+                        <option value="consultation">Child Health Consultation</option>
+                        <option value="vaccination">Vaccination & Immunization</option>
+                        <option value="suvarn">Suvarn Prashan</option>
+                        <option value="ayurveda">Ayurvedic Therapies</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="review">Your Review *</label>
+                    <textarea id="review" name="review" required placeholder="Share your experience with Baalveda..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Your Review</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Baalveda Clinic. All rights reserved. | Premium Healthcare Services</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Review form submission
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                rating: document.querySelector('input[name="rating"]:checked')?.value,
+                service: document.getElementById('service').value,
+                review: document.getElementById('review').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // Store in localStorage
+            let reviews = JSON.parse(localStorage.getItem('baalvedaReviews') || '[]');
+            reviews.push(formData);
+            localStorage.setItem('baalvedaReviews', JSON.stringify(reviews));
+
+            // Show success message
+            alert('Thank you for your review! We appreciate your feedback.');
+            this.reset();
+        });
+
+        // Star rating hover effect
+        const starLabels = document.querySelectorAll('.star-rating label');
+        starLabels.forEach(label => {
+            label.addEventListener('mouseover', function() {
+                this.style.color = '#FFD700';
+            });
+            label.addEventListener('mouseout', function() {
+                const isChecked = document.querySelector(`input[value="${this.previousElementSibling.value}"]:checked`);
+                if (!isChecked) {
+                    this.style.color = 'inherit';
+                }
+            });
+        });
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>
