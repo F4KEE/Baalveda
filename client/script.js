@@ -235,3 +235,192 @@ function updateActiveNavLink() {
 
 // Call on page load
 updateActiveNavLink();
+// ================================
+// REVIEW FORM SUBMISSION
+// ================================
+
+function setupStarRating() {
+    const container = document.getElementById('starRating');
+    if (!container) return;
+
+    const inputs = container.querySelectorAll('input[name="rating"]');
+    const labels = container.querySelectorAll('label');
+
+    function starValue(label) {
+        const id = label.getAttribute('for');
+        const input = id ? container.querySelector('#' + id) : null;
+        return input ? parseInt(input.value, 10) : 0;
+    }
+
+    function highlight(count) {
+        labels.forEach(function (label) {
+            label.classList.toggle('filled', starValue(label) <= count);
+        });
+    }
+
+    function selectedRating() {
+        const checked = container.querySelector('input[name="rating"]:checked');
+        return checked ? parseInt(checked.value, 10) : 0;
+    }
+
+    labels.forEach(function (label) {
+        label.addEventListener('mouseenter', function () {
+            highlight(starValue(label));
+        });
+        label.addEventListener('click', function () {
+            highlight(starValue(label));
+        });
+    });
+
+    container.addEventListener('mouseleave', function () {
+        highlight(selectedRating());
+    });
+
+    inputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+            highlight(selectedRating());
+        });
+    });
+
+    const form = container.closest('form');
+    if (form) {
+        form.addEventListener('reset', function () {
+            highlight(0);
+        });
+    }
+
+    highlight(0);
+}
+
+const REVIEW_SERVICE_LABELS = {
+    consultation: 'Child Health Consultation',
+    vaccination: 'Vaccination & Immunization',
+    suvarn: 'Suvarn Prashan',
+    ayurveda: 'Ayurvedic Therapies',
+    other: 'Other'
+};
+
+function showReviewSuccess(name, rating, service) {
+    const form = document.getElementById('reviewForm');
+    const successMessage = document.getElementById('reviewSuccessMessage');
+    const errorMessage = document.getElementById('reviewErrorMessage');
+    const confirmationText = document.getElementById('reviewConfirmationText');
+
+    if (!form || !successMessage || !confirmationText) return;
+
+    const serviceLabel = service
+        ? (REVIEW_SERVICE_LABELS[service] || service)
+        : 'Not specified';
+    const starDisplay = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+
+    confirmationText.innerHTML = `
+        <strong>${name}</strong><br>
+        Rating: <strong>${rating} / 5</strong> <span style="color:#FFD700;letter-spacing:2px;">${starDisplay}</span><br>
+        Service: <strong>${serviceLabel}</strong>
+    `;
+
+    form.style.display = 'none';
+    if (errorMessage) errorMessage.style.display = 'none';
+    successMessage.style.display = 'block';
+    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function showReviewError(message) {
+    const successMessage = document.getElementById('reviewSuccessMessage');
+    const errorMessage = document.getElementById('reviewErrorMessage');
+    const errorText = document.getElementById('reviewErrorText');
+
+    if (!errorMessage || !errorText) return;
+
+    errorText.textContent = message;
+    if (successMessage) successMessage.style.display = 'none';
+    errorMessage.style.display = 'block';
+    errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    setTimeout(function () {
+        errorMessage.style.display = 'none';
+    }, 5000);
+}
+
+function resetReviewForm() {
+    const form = document.getElementById('reviewForm');
+    const successMessage = document.getElementById('reviewSuccessMessage');
+    const errorMessage = document.getElementById('reviewErrorMessage');
+
+    if (form) {
+        form.reset();
+        form.style.display = 'block';
+    }
+
+    if (successMessage) successMessage.style.display = 'none';
+    if (errorMessage) errorMessage.style.display = 'none';
+
+    const container = document.getElementById('starRating');
+    if (container) {
+        container.querySelectorAll('label').forEach(function (label) {
+            label.classList.remove('filled');
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    setupStarRating();
+
+    const reviewForm = document.getElementById('reviewForm');
+
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const ratingRaw = document.querySelector('input[name="rating"]:checked')?.value;
+            const rating = parseInt(ratingRaw, 10);
+            const service = document.getElementById('service').value;
+            const review = document.getElementById('review').value.trim();
+
+            if (!name || !email || !ratingRaw || !review || Number.isNaN(rating) || rating < 1 || rating > 5) {
+                showReviewError('Please fill all required fields, including your star rating.');
+                return;
+            }
+
+            const submitBtn = reviewForm.querySelector('.submit-btn');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+            }
+
+            try {
+                const { error } = await supabaseClient
+                    .from('reviews')
+                    .insert([
+                        {
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            rating: rating,
+                            service: service,
+                            review_text: review
+                        }
+                    ]);
+
+                if (!error) {
+                    reviewForm.reset();
+                    showReviewSuccess(name, rating, service);
+                } else {
+                    showReviewError(error.message || 'Failed to submit your review. Please try again.');
+                }
+
+            } catch (err) {
+                console.error(err);
+                showReviewError('Something went wrong. Please check your connection and try again.');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Your Review';
+                }
+            }
+        });
+    }
+});
