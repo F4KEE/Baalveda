@@ -6,10 +6,20 @@
 const supabaseUrl = 'https://yafszzizbuojzdtvoprh.supabase.co';
 const supabaseKey = 'sb_publishable_wglkUNoLTpgy23m9KcWTUg_PALnTLde';
 
-const supabaseClient = window.supabase.createClient(
-  supabaseUrl,
-  supabaseKey
-);
+let supabaseClient = null;
+if (window.supabase && typeof window.supabase.createClient === 'function') {
+    try {
+        supabaseClient = window.supabase.createClient(
+            supabaseUrl,
+            supabaseKey
+        );
+    } catch (err) {
+        console.warn('Supabase initialization failed:', err);
+        supabaseClient = null;
+    }
+} else {
+    console.warn('Supabase SDK not found; continuing without it.');
+}
 function setMinDate() {
     const dateInput = document.getElementById('appointmentDate');
     if (dateInput) {
@@ -133,33 +143,54 @@ async function submitBooking() {
     ]);
 
 if (!error) {
-            // Hide form and show success message
-            form.style.display = 'none';
-            const successMessage = document.getElementById('successMessage');
-            const confirmationText = document.getElementById('confirmationText');
-            
-            confirmationText.innerHTML = `
-                <strong>${patientName}</strong><br>
-                Date: <strong>${formatDate(appointmentDate)}</strong><br>
-                Time: <strong>${appointmentTime}</strong><br>
-                Doctor: <strong>${doctor}</strong>
-            `;
-            
-            successMessage.style.display = 'block';
-            
-            // Reset form
-            form.reset();
-        } else {
-            showError(error.message || 'Failed to book appointment. Please try again.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showError('Connection error. Please check your internet and try again.');
-    } finally {
-        submitBtn.disabled = false;
-        submitText.style.display = 'inline';
-        loadingSpinner.style.display = 'none';
-    }
+
+    await fetch('https://yafszzizbuojzdtvoprh.supabase.co/functions/v1/send-whatsapp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            patientName,
+            phone,
+            doctor,
+            appointmentDate,
+            appointmentTime
+        })
+    });
+
+    // Hide form and show success message
+    form.style.display = 'none';
+
+    const successMessage = document.getElementById('successMessage');
+    const confirmationText = document.getElementById('confirmationText');
+    
+    confirmationText.innerHTML = `
+        <strong>${patientName}</strong><br>
+        Date: <strong>${formatDate(appointmentDate)}</strong><br>
+        Time: <strong>${appointmentTime}</strong><br>
+        Doctor: <strong>${doctor}</strong>
+    `;
+    
+    successMessage.style.display = 'block';
+    
+    // Reset form
+    form.reset();
+
+} 
+else {
+    showError(error.message || 'Failed to book appointment. Please try again.');
+}
+
+}  
+catch (error) {
+    console.error('Error:', error);
+    showError('Connection error. Please check your internet and try again.');
+} 
+finally {
+    submitBtn.disabled = false;
+    submitText.style.display = 'inline';
+    loadingSpinner.style.display = 'none';
+}
 }
 
 // Show error message
