@@ -44,7 +44,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: { "Access-Control-Allow-Origin": "*" } })
   }
-LETS IT BE I
+
   try {
     // 1. Gather Vault Secrets Configurations securely
     const firebaseProjectId = Deno.env.get("FIREBASE_PROJECT_ID");
@@ -69,7 +69,22 @@ LETS IT BE I
       );
     }
 
-    const patientName = payload.record.patient_name || "Unknown Patient";
+    let notificationTitle = "New Activity";
+    let notificationBody = "New update received";
+
+      if (payload.table === "appointments") {
+      const patientName = payload.record.patient_name || "Unknown Patient";
+      
+      notificationTitle = "New Appointment";
+      notificationBody = `New appointment booked by ${patientName}`;
+      } else if (payload.table === "reviews") {
+      const reviewerName = payload.record.name || "Anonymous";
+      const rating = payload.record.rating || 5;
+      
+      notificationTitle = "⭐ New Patient Review";
+      notificationBody = `${reviewerName} left a ${rating}-star review`;
+    }
+
 
     // 3. Request Authorized OAuth Access Bearer string
     const accessToken = await getFcmAccessToken(firebaseClientEmail, firebasePrivateKey);
@@ -81,8 +96,8 @@ LETS IT BE I
       message: {
         token: TARGET_DEVICE_TOKEN,
         notification: {
-          title: "New Appointment",
-          body: `New appointment booked by ${patientName}`,
+          title: notificationTitle,
+          body: notificationBody,
         },
         data: {
           appointmentId: String(payload.record.id || ''),

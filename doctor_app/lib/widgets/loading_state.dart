@@ -11,27 +11,13 @@ class LoadingStateWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 72,
-            height: 72,
+            width: 64, height: 64,
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppTheme.primaryNavy.withValues(alpha: 0.1), // Fixed name
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppTheme.primaryNavy.withValues(alpha: 0.3), width: 2), // Fixed name
-            ),
-            child: const CircularProgressIndicator(
-              color: AppTheme.primaryNavy, // Fixed name
-              strokeWidth: 3,
-            ),
+            decoration: BoxDecoration(color: AppTheme.surfacePure, borderRadius: BorderRadius.circular(16), boxShadow: AppTheme.premiumShadow),
+            child: const CircularProgressIndicator(color: AppTheme.primaryNavy, strokeWidth: 3),
           ),
           const SizedBox(height: AppTheme.spacing16),
-          Text(
-            'Syncing clinical matrix...',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.textMedium,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
+          const Text('Syncing data engines...', style: TextStyle(fontSize: 13, color: AppTheme.textMedium, fontWeight: FontWeight.w600)),
         ],
       ),
     );

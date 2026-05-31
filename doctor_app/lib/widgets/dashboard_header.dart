@@ -17,110 +17,60 @@ class DashboardHeader extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: AppTheme.spacing24,
         right: AppTheme.spacing24,
-        top: AppTheme.spacing32,
-        bottom: AppTheme.spacing16,
+        top: AppTheme.spacing24,
+        bottom: AppTheme.spacing8,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Elegant Branding Bar
+          // Elegant Web Branding Sync Bar
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: 36, height: 36,
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [AppTheme.accentRose, Color(0xFFF472B6)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppTheme.accentRose.withValues(alpha: 0.25),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        )
-                      ],
+                      gradient: const LinearGradient(colors: [AppTheme.accentPink, Color(0xFFF472B6)]),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Center(
-                      child: Text(
-                        '|| B ||',
-                        style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: -0.5),
-                      ),
+                      child: Text('|| B ||', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900)),
                     ),
                   ),
                   const SizedBox(width: AppTheme.spacing12),
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'baalveda',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w900,
-                          color: AppTheme.primaryNavy,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      Text(
-                        'HEALTHCARE',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w800,
-                          color: AppTheme.textLight,
-                          letterSpacing: 1.5,
-                        ),
-                      ),
+                      Text('baalveda', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.primaryBlue, letterSpacing: 0.2)),
+                      Text('HEALTHCARE', style: TextStyle(fontSize: 8, fontWeight: FontWeight.w800, color: AppTheme.textLight, letterSpacing: 1.0)),
                     ],
                   ),
                 ],
               ),
-              // User Avatar Context
               Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: AppTheme.surfacePure,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppTheme.borderMuted, width: 1.5),
-                ),
-                child: const Icon(Icons.person_outline, color: AppTheme.primaryNavy, size: 20),
+                width: 38, height: 38,
+                decoration: BoxDecoration(color: AppTheme.surfaceWhite, shape: BoxShape.circle, border: Border.all(color: AppTheme.dividerColor)),
+                child: const Icon(Icons.person_outline_rounded, color: AppTheme.primaryBlue, size: 18),
               )
             ],
           ),
-          const SizedBox(height: AppTheme.spacing32),
+          const SizedBox(height: AppTheme.spacing24),
           
-          // Greeting Set
+          Text('$timeGreeting,', style: const TextStyle(fontSize: 14, color: AppTheme.textMedium, fontWeight: FontWeight.w500)),
+          
+          // FIXED: Displays EXACTLY what is passed down ("Doctor") without adding any "Dr." prefix elements.
           Text(
-            '$timeGreeting,',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppTheme.textMedium,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            'Dr. $doctorName',
+            doctorName, 
             style: Theme.of(context).textTheme.displayMedium,
           ),
-          const SizedBox(height: AppTheme.spacing8),
-          
-          // Sub-bar Date
+          const SizedBox(height: 4),
           Row(
             children: [
-              const Icon(Icons.calendar_today_outlined, color: AppTheme.accentRose, size: 14),
-              const SizedBox(width: AppTheme.spacing8),
-              Text(
-                dateString,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.textMedium,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              const Icon(Icons.calendar_today_outlined, color: AppTheme.accentPink, size: 12),
+              const SizedBox(width: 6),
+              Text(dateString, style: const TextStyle(fontSize: 12, color: AppTheme.textMedium, fontWeight: FontWeight.w600)),
             ],
           ),
         ],
