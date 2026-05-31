@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'widgets/dashboard_page.dart';
+import 'themes/app_theme.dart';
+import 'constants/app_constants.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseMessaging.instance.requestPermission();
+
+  final token = await FirebaseMessaging.instance.getToken();
+
+  print('FCM TOKEN: $token');
+
   await Supabase.initialize(
-    url: 'https://yafszzizbuojzdtvoprh.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhZnN6eml6YnVvanpkdHZvcHJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2MjIwMzIsImV4cCI6MjA5NTE5ODAzMn0.U04l8OCMwm-2BXw8gE1gUMR5F7qUv-NhlfFcVM5etno',
+    url: AppConstants.supabaseUrl, //[cite: 1, 8]
+    anonKey: AppConstants.supabaseAnonKey, //[cite: 1, 8]
   );
 
   runApp(const MyApp());
@@ -17,58 +30,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AppointmentsPage(),
-    );
-  }
-}
-
-class AppointmentsPage extends StatelessWidget {
-  const AppointmentsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final supabase = Supabase.instance.client;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Appointments'),
-      ),
-      body: FutureBuilder(
-        future: supabase
-            .from('appointments')
-            .select()
-            .order('created_at', ascending: false),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final appointments = snapshot.data as List;
-
-          return ListView.builder(
-            itemCount: appointments.length,
-            itemBuilder: (context, index) {
-              final appointment = appointments[index];
-
-              return Card(
-                margin: const EdgeInsets.all(8),
-                child: ListTile(
-                  title: Text(
-                    appointment['patient_name'] ?? '',
-                  ),
-                  subtitle: Text(
-                    '${appointment['doctor']} • ${appointment['appointment_date']} • ${appointment['appointment_time']}',
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+      title: AppConstants.appName, //[cite: 1, 8]
+      theme: AppTheme.lightTheme, // Loads your beautiful new website-inspired look[cite: 8]
+      home: const DashboardPage(), // Launches your premium interactive calendar dashboard[cite: 8]
     );
   }
 }
